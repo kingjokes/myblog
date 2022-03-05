@@ -6,6 +6,8 @@ export interface UserInterface{
 
     blogDetails:(req:Request,res:Response)=>void,
 
+    blogCategories:(req:Request,res:Response)=>void
+
 
 
 

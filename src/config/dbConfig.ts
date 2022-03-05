@@ -1,8 +1,12 @@
 import {connect, model, Schema} from "mongoose";
 import {BlogSchema} from "../interfaces/blogSchema"
+import {BlogCategory} from "../interfaces/blogCategory";
+require('dotenv').config()
 
-const password= "hHeMUKq33FTSQXf3"
-const db= "blog"
+
+const password= process.env.DBPASS
+const db= process.env.DBTABLE
+const username = process.env.DBUSERNAME
 
 
 export class dbConfig {
@@ -12,12 +16,15 @@ export class dbConfig {
 
     }
 
-   private static  createSchema(){
+    private static  createSchema(){
         return new Schema<BlogSchema>({
             title:{ type: String, required:true},
             content:{type: String, required:true},
             image:{type: String, required:true},
             author:{type: String, required:true},
+            readTime:{type: String, required:true},
+            tag:{type:String, required:true},
+            hash:{type:[], required:true}
 
         },
             {
@@ -25,13 +32,29 @@ export class dbConfig {
             })
     }
 
+    private static categorySchema(){
+        return new Schema({
+            name:{type:String, required:true},
+
+        },
+            {
+                timestamps:true
+            })
+    }
+
+
     model(){
         return model<BlogSchema>('blogPosts', dbConfig.createSchema())
     }
 
+    categoryModel(){
+        return model<BlogCategory>('blogCategory',dbConfig.categorySchema())
+    }
+
      async connect():Promise<void>{
         try{
-            await connect(`mongodb+srv://kingjokes:${password}@cluster0.ljkkl.mongodb.net/${db}?retryWrites=true&w=majority`).then(
+
+            await connect(`mongodb+srv://${username}:${password}@cluster0.ljkkl.mongodb.net/${db}?retryWrites=true&w=majority`).then(
                 ()=>{
                     return console.log("db connected")
                 },

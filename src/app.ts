@@ -17,6 +17,8 @@ const db = new dbConfig()
 
 app.use(new userRoute().routes)
 
+app.use('/uploads',express.static(__dirname+'/uploads/'))
+
 db.connect().then(response=>{
     app.listen(4000, 'localhost', ()=>{
         console.log("server running")

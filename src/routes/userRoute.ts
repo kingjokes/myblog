@@ -15,6 +15,7 @@ const router:Router = express.Router()
     get routes() {
         router.get('/blogs', this.userController.getBlog)
         router.get('/blog/:id',this.userController.blogDetails)
+        router.get('/blog-categories',this.userController.blogCategories)
 
         return router
     }
